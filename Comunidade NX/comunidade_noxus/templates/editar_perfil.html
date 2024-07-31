@@ -1,0 +1,59 @@
+{% extends 'perfil.html' %}
+
+{% block form_editarperfil %}
+<div class="container">
+    <hr>
+    <div class="row">
+      <div class="col">
+        <form method="POST" action="" class="border" enctype="multipart/form-data">
+          {{form_editarperfil.csrf_token}}
+          <legend>Editar</legend> 
+          <fieldset>
+            <div class="form-group">
+              {{form_editarperfil.username.label(class="form-control-label ")}} 
+  
+              {% if form_editarperfil.errors %}
+                {{form_editarperfil.username(class="form-control is-invalid")}} 
+                <div class="invalid-feedback">
+                {% for error in form_editarperfil.username.errors%}
+                  {{error}}
+                {% endfor%}
+              </div>
+                {%else%}
+                {{form_editarperfil.username(class="form-control")}} 
+              {% endif%}   
+              
+              {{form_editarperfil.email.label}}
+
+              {% if form_editarperfil.errors %}
+              {{form_editarperfil.email(class="form-control is-invalid")}} 
+              <div class="invalid-feedback">
+              {% for error in form_editarperfil.email.errors%}
+                {{error}}
+              {% endfor%}
+            </div>
+              {%else%}
+              {{form_editarperfil.email(class="form-control")}} 
+            {% endif%}    
+  
+          </div>
+          <div class="form-group">
+            {{form_editarperfil.foto_perfil.label}}
+            {{form_editarperfil.foto_perfil(class="form-control-file")}}
+            {% if form_editarperfil.foto_perfil .errors%}
+                {% for erro in form_editarperfil.foto_perfil.errors%} 
+                    <span class="text-danger">{{erro}}</span><br>
+                {% endfor %}
+            {% endif %}
+          </div>
+        </fieldset>
+  
+          {{form_editarperfil.botao_submit_editarperfil(class="btn btn-primary mt-2")}}
+  
+        </form>
+       
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+  

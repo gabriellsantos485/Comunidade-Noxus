@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block body%}
+    <div class="container mt-3">
+       
+            <div class="row border mt-4 p-3 meupost ">
+                <div class="col col-3">
+                    <div class="image pe-2">
+                        <img src="{{url_for('static', filename='fotos_perfil/{}'.format(post.autor.foto_perfil)) }}" class="rounded" width="200" >
+                        </div>
+                        <strong>{{post.autor.username}}</strong>
+                </div>
+
+                <div class="col col-9"> 
+                    <h3>
+                        {{post.titulo}}
+                        <small class="text-muted" style="font-size: 15px"> - Data de criação: {{post.data_criacao.strftime('%d/%m/%Y')}} 
+                            {% if form_criarpost%}
+                            -- <a href="#editarpost">Editar </a>/ <a data-bs-toggle="modal" data-bs-target="#excluirpost"    href="#" class="text-danger">Excluir Post</a></small>
+                            {%endif%}
+                    </h3>
+                    
+                    <p>{{post.corpo}}</p>
+                </div>
+            </div>
+
+    </div>
+
+{% if form_criarpost%}
+
+<div class="container">
+
+    <div class="row">
+      <div class="col">
+        <form method="POST" action="" class="border" id="editarpost">
+          {{form_criarpost.csrf_token}}
+          <legend>Editar Post</legend> 
+          <fieldset>
+            <div class="form-group">
+              {{form_criarpost.titulo.label(class="form-control-label ")}} 
+  
+              {% if form_criarpost.errors %}
+                {{form_criarpost.titulo(class="form-control is-invalid")}} 
+                <div class="invalid-feedback">
+                {% for error in form_criarpost.titulo.errors%}
+                  {{error}}
+                {% endfor%}
+              </div>
+
+                {%else%}
+                {{form_criarpost.titulo(class="form-control")}} 
+              {% endif%}   
+            </div>
+
+
+            <div class="form-group">
+              {{form_criarpost.corpo.label(class="form-control-label ")}} 
+  
+              {% if form_criarpost.errors %}
+                {{form_criarpost.corpo(class="form-control is-invalid")}} 
+                <div class="invalid-feedback">
+                {% for error in form_criarpost.corpo.errors%}
+                  {{error}}
+                {% endfor%}
+              </div>
+
+                {%else%}
+                {{form_criarpost.corpo(class="form-control")}} 
+              {% endif%}   
+            </div>
+        </fieldset>
+  
+          {{form_criarpost.botao_submit(class="btn btn-primary mt-2")}}
+  
+        </form>
+       
+      </div>
+    </div>
+  </div>
+
+{% endif %}
+
+<div class="modal fade" id="excluirpost" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Você quer realmente EXCLUIR esse post ? (Essa ação não pode ser desfeita !)
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <form method="POST" action="{{ url_for('excluir_post', post_id=post.id)}}">
+            <button type="submit" class="btn btn-danger">Confirmar</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{%endblock%}
